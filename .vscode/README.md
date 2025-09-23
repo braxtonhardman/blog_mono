@@ -1,0 +1,1 @@
+The following architecture is based on the clean architecture following dependency rules

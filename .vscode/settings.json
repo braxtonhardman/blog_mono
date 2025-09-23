@@ -1,0 +1,21 @@
+{
+    "go.gopath": "/home/braxton/go",
+    "go.goroot": "/usr/local/go",
+    "go.toolsGopath": "/home/braxton/go",
+    "go.lintTool": "golangci-lint",
+    "go.formatTool": "goimports",
+    "go.useLanguageServer": true,
+    "go.languageServerFlags": [
+        "-rpc.trace"
+    ],
+    "go.buildOnSave": "package",
+    "go.lintOnSave": "package",
+    "go.vetOnSave": "package",
+    "go.coverOnSave": false,
+    "go.testOnSave": false,
+    "go.installDependenciesWhenBuilding": true,
+    "go.toolsEnvVars": {
+        "GOPATH": "/home/braxton/go",
+        "GOROOT": "/usr/local/go"
+    }
+}
