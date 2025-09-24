@@ -7,6 +7,7 @@ import Projects from "./app/routes/Projects.tsx";
 import About from "./app/routes/About.tsx";
 import Login from "./app/routes/Login.tsx";
 import Letters from "./app/routes/Letters.tsx";
+import PostForm from "./features/postform/PostForm.tsx";
 import LettersDetail from "./features/letters/components/LettersDetail.tsx";
 import BaseLayout from "./layouts/BaseLayout.tsx";
 
@@ -22,8 +23,9 @@ ReactDOM.createRoot(root).render(
         <Route path="/currentprojects" element={<Projects />} />
         <Route path="/about" element={<About />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/letters/create" element={<PostForm />} />
         <Route path="/letters" element={<Letters />} />
-        <Route path="/letters/:id" element={<LettersDetail />} />
+        <Route path="/letters/:title" element={<LettersDetail />} />
       </Routes>
 
     

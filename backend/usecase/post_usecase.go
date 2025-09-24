@@ -34,3 +34,7 @@ func (pc *postUseCase) List() ([]domain.Post, error) {
 	// If postName provided, filter by title
 	return pc.repo.List()
 }
+
+func (pc *postUseCase) GetPost(postTitle string) (*domain.Post, error) { 
+	return pc.repo.GetPost(postTitle)
+}

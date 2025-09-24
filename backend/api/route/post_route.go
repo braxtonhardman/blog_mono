@@ -23,5 +23,9 @@ func NewPostRouter(env *bootstrap.Env, db *gorm.DB, publicRouter *gin.RouterGrou
 	publicRouter.GET("/posts", pc.List)
 
 	// Route to create a new post
-	publicRouter.POST("/posts", pc.CreatePost)
+	publicRouter.POST("/posts/create", pc.CreatePost)
+
+
+	// Get all the post by title 
+	publicRouter.GET("/posts/:title", pc.GetPost)
 }

@@ -17,10 +17,11 @@ type Post struct {
 type PostRepository interface {
     Create(*Post) error
     List() ([]Post, error)
-
+	GetPost(postTitle string) (*Post, error)
 }
 
 type PostUseCase interface { 
 	Create(*Post) error
     List() ([]Post, error)
+	GetPost(postTitle string) (*Post, error)
 }

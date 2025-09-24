@@ -30,3 +30,14 @@ func (p *postRepository) List() ([]domain.Post, error) {
 	return posts, nil
 }
 
+func(p *postRepository) GetPost(postTitle string) (*domain.Post, error) { 
+	var post domain.Post
+	results := p.db.Where("title = ?", postTitle).First(&post)
+
+	if(results.Error != nil) { 
+		return nil, results.Error
+	}
+	
+	return &post, nil
+}
+

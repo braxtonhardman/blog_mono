@@ -44,3 +44,18 @@ func (c *PostController) CreatePost(gin *gin.Context) {
 	// Return created post as JSON
 	gin.JSON(http.StatusCreated, post)
 }
+
+func(c *PostController) GetPost(gin *gin.Context) { 
+
+	postTitle := gin.Param("title")
+
+	post, err := c.PostUseCase.GetPost(postTitle)
+
+	if(err != nil) { 
+		gin.JSON(http.StatusInternalServerError, domain.ErrorResponse{Message: "Failed to get post"})
+		return
+	}
+
+	gin.JSON(http.StatusOK, post)
+
+}
