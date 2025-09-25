@@ -1,6 +1,4 @@
 // Detail that appear on more information about the letter
-import { TypographyH1 } from "@/components/ui/typography/TypographyH1"
-import { TypographyH4 } from "@/components/ui/typography/TypographyH4"
 import { useEffect, useState } from "react"
 import { useParams } from "react-router"
 import type { LetterCardProps } from "../types"
@@ -10,6 +8,7 @@ function LettersDetail() {
 
   const { title } = useParams(); // Get :title from route
   const [post, setPost] = useState<LetterCardProps>(); // post type is null or object
+  const [date, setDate] = useState<string>("");
   const [error, setError] = useState("");
 
   useEffect(() => {
@@ -22,6 +21,10 @@ function LettersDetail() {
           const data: LetterCardProps = await res.json();
           console.log(data)
           setPost(data);
+         
+          const splitDate: string[] = data.CreatedAt.split("T")
+          console.log(splitDate)
+          setDate(splitDate[0])
         }
         
       } catch (err) {
@@ -36,12 +39,17 @@ function LettersDetail() {
   if (!post) return <div>Loading...</div>;
 
   return (
-    <div className="flex flex-col mt-6">
+    <div className="w-full min-h-full flex flex-col mt-6">
       {/* Top Header */}
       <div className="w-full flex flex-col items-center relative mb-4">
-        <TypographyH1 text={post.Title} />
+        <h1 className="lg:text-5xl md:text-4xl sm:text-3xl font-semibold">
+          {post.Title}
+        </h1>
 
-        <TypographyH4 text={post.CreatedAt} />
+        <h4 className="lg:text-xl sm:text-lg">
+          {date}
+        </h4>
+
 
       </div>
 
@@ -49,7 +57,9 @@ function LettersDetail() {
       <div className="w-full mt-3">
         <div className="mx-auto max-w-2xl md:max-w-3xl lg:max-w-4xl px-4">
           <div className="prose prose-neutral max-w-none leading-loose">
-            <TypographyH4 text={post.Description ? post.Description : ""} />
+            <p>
+            {post.Description ? post.Description : ""}
+            </p>
           </div>
         </div>
       </div>

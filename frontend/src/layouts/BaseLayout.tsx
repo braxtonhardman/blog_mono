@@ -7,7 +7,7 @@ type LayoutProps = {
 
 function BaseLayout({children}: LayoutProps) {
   return (
-    <div className="flex flex-col">
+    <div className="w-full min-h-full">
         <NavigationBar />
         
         {children}

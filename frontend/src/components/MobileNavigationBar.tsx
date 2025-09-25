@@ -1,0 +1,60 @@
+import { useState, useRef, useEffect} from "react"
+import { NavigationMenu, NavigationMenuItem, NavigationMenuList, NavigationMenuLink } from "@/components/ui/navigation-menu"
+import { Menu } from "lucide-react" // hamburger icon from lucide
+import { Button } from "@/components/ui/button"
+
+export function MobileNavigationBar() {
+  const [open, setOpen] = useState(false)
+  const menuRef = useRef<HTMLDivElement>(null)
+
+  // Click outside listener
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+        setOpen(false) // close menu
+      }
+    }
+
+    document.addEventListener("mousedown", handleClickOutside)
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside)
+    }
+  }, [menuRef])
+
+  return (
+    <div ref={menuRef} className="sm:hidden relative">
+      <Button onClick={() => setOpen(!open)}>
+        <Menu className="w-1/2 h-1/2 font-semibold" />
+      </Button>
+
+      {open && (
+        <div className="absolute top-0 bg-black rounded-md z-50">
+          <NavigationMenu>
+            <NavigationMenuList className="flex flex-col p-2">
+              <NavigationMenuItem>
+                <NavigationMenuLink asChild>
+                  <a href="/" className="text-white">Home</a>
+                </NavigationMenuLink>
+              </NavigationMenuItem>
+              <NavigationMenuItem>
+                <NavigationMenuLink asChild>
+                  <a href="/projects" className="text-white">Projects</a>
+                </NavigationMenuLink>
+              </NavigationMenuItem>
+              <NavigationMenuItem>
+                <NavigationMenuLink asChild>
+                  <a href="/about" className="text-white ">About</a>
+                </NavigationMenuLink>
+              </NavigationMenuItem>
+              <NavigationMenuItem>
+                <NavigationMenuLink asChild>
+                  <a href="/letters" className="text-white">Letters</a>
+                </NavigationMenuLink>
+              </NavigationMenuItem>
+            </NavigationMenuList>
+          </NavigationMenu>
+        </div>
+      )}
+    </div>
+  )
+}

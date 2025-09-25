@@ -1,73 +1,52 @@
-import { NavLink } from "react-router";
-import { Separator } from "@/components/ui/separator";
-import { TypographyH1} from './ui/typography/TypographyH1';
-import { TypographyH3} from './ui/typography/TypographyH3';
-import { TypographyH4 } from "./ui/typography/TypographyH4";
+import { NavLink } from "react-router"
+import { TypographyH4 } from "./ui/typography/TypographyH4"
 import {
   NavigationMenu,
   NavigationMenuItem,
   NavigationMenuLink,
   NavigationMenuList,
-} from "@/components/ui/navigation-menu" 
-import { EmailSignUp } from "@/features/emailsubscribe/components/EmailSignUp";
+} from "@/components/ui/navigation-menu"
+import { EmailSignUp } from "@/features/emailsubscribe/components/EmailSignUp"
+import { MobileNavigationBar } from "./MobileNavigationBar"
 
 function NavigationBar() {
   return (
-    <div className="flex flex-row p-2 m-2 justify-between">
-      <div className="flex flex-row items-center justify-center">
-        <TypographyH1 text="Braxton" />
-        <Separator orientation="vertical" decorative={true} className="ml-2 mr-2 bg-foreground p-0.25" />
-        <TypographyH3 text="Blog" />
-      </div>
+    <div className="w-full flex flex-col sm:flex-row justify items-center">
       
+      {/* Desktop Menu */}
+      <div className="hidden sm:flex flex-row items-end justify-end space-x-6">
+        <NavigationMenu>
+          <NavigationMenuList className="flex items-center justify-center">
+            <NavigationMenuItem>
+              <NavigationMenuLink asChild>
+                <NavLink to="/"><TypographyH4 text="Home" /></NavLink>
+              </NavigationMenuLink>
+            </NavigationMenuItem>
+            <NavigationMenuItem>
+              <NavigationMenuLink asChild>
+                <NavLink to="/currentprojects"><TypographyH4 text="Projects" /></NavLink>
+              </NavigationMenuLink>
+            </NavigationMenuItem>
+            <NavigationMenuItem>
+              <NavigationMenuLink asChild>
+                <NavLink to="/about"><TypographyH4 text="About" /></NavLink>
+              </NavigationMenuLink>
+            </NavigationMenuItem>
+            <NavigationMenuItem>
+              <NavigationMenuLink asChild>
+                <NavLink to="/letters"><TypographyH4 text="Letters" /></NavLink>
+              </NavigationMenuLink>
+            </NavigationMenuItem>
+          </NavigationMenuList>
+        </NavigationMenu>
 
-      <NavigationMenu>
-        <NavigationMenuList>
+        <EmailSignUp />
+      </div>
 
-          <NavigationMenuItem>
-            <NavigationMenuLink asChild>
-              {/* NavLink makes it easy to show active states */}
-              <NavLink
-                to="/">
-                <TypographyH4 text="Home" />
-              </NavLink>
-            </NavigationMenuLink>
-          </NavigationMenuItem>
-
-          <NavigationMenuItem>
-            <NavigationMenuLink asChild>
-              {/* NavLink makes it easy to show active states */}
-              <NavLink to="/currentprojects">
-                <TypographyH4 text="Projects" />
-              </NavLink>
-            </NavigationMenuLink>
-          </NavigationMenuItem>
-
-          <NavigationMenuItem>
-            <NavigationMenuLink asChild>
-              {/* NavLink makes it easy to show active states */}
-              <NavLink to="/about">
-              <TypographyH4 text="About" />
-              </NavLink>
-            </NavigationMenuLink>
-          </NavigationMenuItem>
-
-
-          <NavigationMenuItem>
-            <NavigationMenuLink asChild>
-              {/* NavLink makes it easy to show active states */}
-              <NavLink to="/letters">
-              <TypographyH4 text="Letters" />
-              </NavLink>
-            </NavigationMenuLink>
-          </NavigationMenuItem>
-
-
-        </NavigationMenuList>
-      </NavigationMenu>
-
-      <EmailSignUp />
-
+      {/* Mobile Menu */}
+      <div className="sm:hidden w-full top-0 left-0">
+        <MobileNavigationBar />
+      </div>
     </div>
   )
 }
