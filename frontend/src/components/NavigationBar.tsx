@@ -10,7 +10,7 @@ import { MobileNavigationBar } from "./MobileNavigationBar"
 
 function NavigationBar() {
   return (
-    <div className="w-full border-b p-2">
+    <div className="w-full p-2">
       {/* Desktop Menu */}
       <div className="hidden sm:grid grid-cols-3 items-center">
         
@@ -38,7 +38,7 @@ function NavigationBar() {
               </NavigationMenuItem>
               <NavigationMenuItem>
                 <NavigationMenuLink asChild className="hover:bg-blue-500 hover:text-white">
-                  <NavLink to="/archives"><h2 className="font-semibold text-xl">Archives</h2></NavLink>
+                  <NavLink to="/archives"><h2 className="font-semibold text-xl">Archive</h2></NavLink>
                 </NavigationMenuLink>
               </NavigationMenuItem>
             </NavigationMenuList>
@@ -46,9 +46,9 @@ function NavigationBar() {
         </div>
 
         {/* Right side subscribe */}
-        <div className="flex justify-end">
+        {/* <div className="flex justify-end">
           <EmailSignUp />
-        </div>
+        </div> */}
       </div>
 
       {/* Mobile Menu */}

@@ -1,8 +1,8 @@
-import LetterCard from "./LetterCard"
 import type { LetterCardProps } from "../types";
 import { NavLink } from "react-router";
 import { useEffect, useState } from "react";
-
+import { ScrollArea } from "@/components/ui/scroll-area"
+import { Separator } from "@/components/ui/separator";
 
 // Renders the list of avaliable cards 
 function LettersList() {
@@ -12,7 +12,7 @@ function LettersList() {
 
   useEffect(() => { 
     // Replace with your actual backend endpoint
-    fetch("http://localhost:8080/posts") 
+    fetch(`http://${import.meta.env.VITE_ADDRESS}/posts`) 
       .then((res) => {
         if (!res.ok) {
           throw new Error("Failed to fetch letters");
@@ -37,14 +37,33 @@ function LettersList() {
   return (
 
     <ul className="flex flex-col mt-2 justify-center items-center w-full h-full">
-      <h1 className="font-semibold text-4xl underline underline-offset-8">
-        Archives
-      </h1>
-        {letters.map((letter, index) => (
-            <NavLink key={index} to={`/letters/${letter.Title}`} className="m-3 w-1/2">
-              <LetterCard key={letter.ID} title={letter.Title} createdAt={letter.CreatedAt} />
-            </ NavLink>
-        ))}
+      <div className="mt-5 w-full flex flex-col justify-between items-center">
+        <ScrollArea className="w-3/4">
+
+          <h1 className="leading-none font-bold text-xl sm:xl underline underline-offset-8">Archive</h1>
+
+          {letters.map((letter, index) => (
+                <NavLink key={index} to={`/letters/${letter.Title}`} className="m-3 hover:text-blue-500">
+                  <div key={letter.ID} className="flex flex-row justify-between items-center text-semibold text-lg">
+                    <h1>
+                      {letter.Title}
+                    </h1>
+                    <h3 className="hidden sm:flex">
+                      {new Intl.DateTimeFormat("en-US", {
+                        year: "numeric",
+                        month: "long",
+                        day: "numeric",
+                      }).format(new Date(letter.CreatedAt))
+                      }
+                    </h3>
+                  </div>
+                  <Separator className="my-2" />
+                </ NavLink>
+            ))}
+        </ScrollArea>
+        
+      </div>
+        
     </ul>
 
   )

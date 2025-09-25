@@ -48,7 +48,7 @@ export function MobileNavigationBar() {
               </NavigationMenuItem>
               <NavigationMenuItem>
                 <NavigationMenuLink asChild>
-                  <a href="/letters" className="text-white">Letters</a>
+                  <a href="/archives" className="text-white">Archive</a>
                 </NavigationMenuLink>
               </NavigationMenuItem>
             </NavigationMenuList>

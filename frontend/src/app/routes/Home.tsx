@@ -41,17 +41,17 @@ function Home() {
     <div className="grid grid-cols-6 gap-1 mt-5">
 
       {/* About Section */}
-      <div className="flex flex-col align-middle justify-center items-center col-span-6 sm:col-span-5 col-start-1 p-2">
+      <div className="flex flex-col align-middle justify-center items-center col-span-6 sm:col-span-5 gap-2 col-start-1 p-2">
         <h1 className="lg:text-7xl md:text-5xl text-5xl text-center text-d4a373 font-bold md:font-semibold">
           Braxton Hardman 
         </h1>
-        <h3 className="text-lg sm:text-xl mt-3 row-start-2 font-light text-center">
+        <h3 className="text-lg sm:text-xl mt-3 row-start-2 font-light text-center w-5/6">
           Lorem ipsum dolor sit amet consectetur adipisicing elit. Quibusdam non sint vero alias, expedita aperiam id, maiores doloribus accusamus in adipisci quasi dolor? Laboriosam, tempore.
         </h3>
       </div>
 
       {/* Projects */}
-      <div className="flex flex-col justify-center items-center w-full h-full row-start-2 col-span-6 sm:col-span-5 mb-5">
+      <div className="flex flex-col justify-center items-center w-full h-full row-start-2 col-span-6 sm:col-span-5 mb-2 mt-2">
         <Carousel
           opts={{
             align: "start",
@@ -85,8 +85,10 @@ function Home() {
           <li key={index} className="mt-2 p-2">
             <NavLink to={`/letters/${letter.Title}`}>
               <div className="flex flex-row items-center p-2 hover:text-blue-700">
-                <SquareArrowOutUpRight />
-                <h1 className="font-semibold ml-3 text-xl">{letter.Title}</h1>
+                <div className="flex justify-center items-center rounded-full p-2 bg-neutral-200">
+                  <SquareArrowOutUpRight className="w-4 h-4"/>
+                </div>
+                <h1 className="font-light ml-3 text-xl">{letter.Title}</h1>
               </div>
               
             </NavLink>
@@ -95,7 +97,7 @@ function Home() {
       </ul>
 
       {/* Subscribe Section */}
-      <div className="flex flex-col align-middle justify-center items-center row-start-3 col-span-6 mt-15 p-2">
+      <div className="flex flex-col align-middle justify-center items-center row-start-3 col-span-6 mt-20 p-2">
         {/* Title */}
         <h1 className="font-semibold text-5xl">
               Subscribe
