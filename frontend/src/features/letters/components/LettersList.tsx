@@ -37,6 +37,9 @@ function LettersList() {
   return (
 
     <ul className="flex flex-col mt-2 justify-center items-center w-full h-full">
+      <h1 className="font-semibold text-4xl underline underline-offset-8">
+        Archives
+      </h1>
         {letters.map((letter, index) => (
             <NavLink key={index} to={`/letters/${letter.Title}`} className="m-3 w-1/2">
               <LetterCard key={letter.ID} title={letter.Title} createdAt={letter.CreatedAt} />

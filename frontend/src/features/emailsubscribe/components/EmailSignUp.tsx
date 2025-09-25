@@ -3,9 +3,9 @@ import { Input } from "@/components/ui/input"
 
 export function EmailSignUp() {
   return (
-    <div className="flex w-full max-w-sm items-center mr-4 gap-2">
+    <div className="flex justify-center w-full max-w-sm gap-4 items-center">
       <Input type="email" placeholder="Email" />
-      <Button type="submit" variant="outline">
+      <Button type="submit" variant="outline" className="bg-blue-500 text-white">
         Subscribe
       </Button>
     </div>

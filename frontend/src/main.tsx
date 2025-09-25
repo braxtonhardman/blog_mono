@@ -24,7 +24,7 @@ ReactDOM.createRoot(root).render(
         <Route path="/about" element={<About />} />
         <Route path="/login" element={<Login />} />
         <Route path="/letters/create" element={<PostForm />} />
-        <Route path="/letters" element={<Letters />} />
+        <Route path="/archives" element={<Letters />} />
         <Route path="/letters/:title" element={<LettersDetail />} />
       </Routes>
     </BaseLayout>

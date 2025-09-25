@@ -1,5 +1,4 @@
 import { NavLink } from "react-router"
-import { TypographyH4 } from "./ui/typography/TypographyH4"
 import {
   NavigationMenu,
   NavigationMenuItem,
@@ -11,40 +10,49 @@ import { MobileNavigationBar } from "./MobileNavigationBar"
 
 function NavigationBar() {
   return (
-    <div className="w-full flex flex-col sm:flex-row justify items-center">
-      
+    <div className="w-full border-b p-2">
       {/* Desktop Menu */}
-      <div className="hidden sm:flex flex-row items-end justify-end space-x-6">
-        <NavigationMenu>
-          <NavigationMenuList className="flex items-center justify-center">
-            <NavigationMenuItem>
-              <NavigationMenuLink asChild>
-                <NavLink to="/"><TypographyH4 text="Home" /></NavLink>
-              </NavigationMenuLink>
-            </NavigationMenuItem>
-            <NavigationMenuItem>
-              <NavigationMenuLink asChild>
-                <NavLink to="/currentprojects"><TypographyH4 text="Projects" /></NavLink>
-              </NavigationMenuLink>
-            </NavigationMenuItem>
-            <NavigationMenuItem>
-              <NavigationMenuLink asChild>
-                <NavLink to="/about"><TypographyH4 text="About" /></NavLink>
-              </NavigationMenuLink>
-            </NavigationMenuItem>
-            <NavigationMenuItem>
-              <NavigationMenuLink asChild>
-                <NavLink to="/letters"><TypographyH4 text="Letters" /></NavLink>
-              </NavigationMenuLink>
-            </NavigationMenuItem>
-          </NavigationMenuList>
-        </NavigationMenu>
+      <div className="hidden sm:grid grid-cols-3 items-center">
+        
+        {/* Left spacer */}
+        <div></div>
 
-        <EmailSignUp />
+        {/* Center nav links */}
+        <div className="flex justify-center">
+          <NavigationMenu>
+            <NavigationMenuList className="flex items-center space-x-6">
+              <NavigationMenuItem>
+                <NavigationMenuLink className="hover:bg-blue-500 hover:text-white" asChild>
+                  <NavLink to="/"><h2 className="font-semibold text-xl">Home</h2></NavLink>
+                </NavigationMenuLink>
+              </NavigationMenuItem>
+              <NavigationMenuItem>
+                <NavigationMenuLink asChild className="hover:bg-blue-500 hover:text-white">
+                  <NavLink to="/currentprojects"><h2 className="font-semibold text-xl">Projects</h2></NavLink>
+                </NavigationMenuLink>
+              </NavigationMenuItem>
+              <NavigationMenuItem>
+                <NavigationMenuLink asChild className="hover:bg-blue-500 hover:text-white">
+                  <NavLink to="/about"><h2 className="font-semibold text-xl">About</h2></NavLink>
+                </NavigationMenuLink>
+              </NavigationMenuItem>
+              <NavigationMenuItem>
+                <NavigationMenuLink asChild className="hover:bg-blue-500 hover:text-white">
+                  <NavLink to="/archives"><h2 className="font-semibold text-xl">Archives</h2></NavLink>
+                </NavigationMenuLink>
+              </NavigationMenuItem>
+            </NavigationMenuList>
+          </NavigationMenu>
+        </div>
+
+        {/* Right side subscribe */}
+        <div className="flex justify-end">
+          <EmailSignUp />
+        </div>
       </div>
 
       {/* Mobile Menu */}
-      <div className="sm:hidden w-full top-0 left-0">
+      <div className="sm:hidden flex justify-end items-end w-full top-0 left-0">
         <MobileNavigationBar />
       </div>
     </div>
