@@ -3,59 +3,67 @@ package controller
 import (
 	"blog-backend/domain"
 	"net/http"
-
 	"github.com/gin-gonic/gin"
 )
 
-// This is at the edge of the application which translates HTTP messages into a format the rest of the application can
-// understand
 type PostController struct {
 	PostUseCase domain.PostUseCase
 }
 
-// Both of these functions operate on the PostControllers struct
-// Get all posts from the database gin.Context implements both the writer and the request
-func (c *PostController) List(gin *gin.Context) {
-	// Call use case to get posts
+type PostRequest struct {
+	domain.Post
+	Blocks []domain.Block `json:"blocks"`
+}
+
+func (c *PostController) List(ctx *gin.Context) {
 	posts, err := c.PostUseCase.List()
 	if err != nil {
-		gin.JSON(http.StatusInternalServerError, domain.ErrorResponse{Message: "Failed to fetch posts"})
+		ctx.JSON(http.StatusInternalServerError, domain.ErrorResponse{Message: "Failed to fetch posts"})
+		return
+	}
+	ctx.JSON(http.StatusOK, posts)
+}
+
+func (c *PostController) CreatePost(ctx *gin.Context) {
+	var req PostRequest
+	if err := ctx.ShouldBind(&req); err != nil {
+		ctx.JSON(http.StatusBadRequest, domain.ErrorResponse{Message: "Invalid request"})
 		return
 	}
 
-	// Return posts as JSON
-	gin.JSON(http.StatusOK, posts)
-}
+	tempPost := domain.Post{
+		ID: req.ID,
+		Title: req.Title,
+		Description: req.Description,
+		CreatedAt: req.CreatedAt,
+		UpdatedAt: req.UpdatedAt,
+		DeletedAt: req.DeletedAt,
+	}
 
-// Create a post in the database should be authenticated so that only authenticated users can create posts
-func (c *PostController) CreatePost(gin *gin.Context) {
-	// Parse JSON request body into Post struct
-	var post domain.Post
+	createdPost, err := c.PostUseCase.Create(&tempPost)
 
-	if err := gin.Bind(&post); err != nil {return}
-		
-	// Call use case to create post
-	err := c.PostUseCase.Create(&post)
-	if err != nil {
-		gin.JSON(http.StatusInternalServerError, domain.ErrorResponse{Message: "Failed to create post"})
+	if(err != nil){
+		ctx.JSON(http.StatusInternalServerError, domain.ErrorResponse{Message: "Failed to create post"})
 		return
 	}
 
-	// Return created post as JSON
-	gin.JSON(http.StatusCreated, post)
+	if(len(req.Blocks) != 0) { 
+		err := c.PostUseCase.CreateBlocks(req.Blocks, createdPost.ID)
+		if(err != nil) { 
+			ctx.JSON(http.StatusInternalServerError, domain.ErrorResponse{Message: "Failed to create post"})
+			return
+		}
+	}
+	
+	ctx.JSON(http.StatusCreated, req.Post)
 }
 
-func(c *PostController) GetPost(gin *gin.Context) { 
-
-	postTitle := gin.Param("title")
-
+func (c *PostController) GetPost(ctx *gin.Context) {
+	postTitle := ctx.Param("title")
 	post, err := c.PostUseCase.GetPost(postTitle)
-
-	if(err != nil) { 
-		gin.JSON(http.StatusInternalServerError, domain.ErrorResponse{Message: "Failed to get post"})
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, domain.ErrorResponse{Message: "Failed to get post"})
 		return
 	}
-
-	gin.JSON(http.StatusOK, post)
-
+	ctx.JSON(http.StatusOK, post)
 }

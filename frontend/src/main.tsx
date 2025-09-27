@@ -10,6 +10,7 @@ import PostForm from "./features/postform/PostForm.tsx";
 import LettersDetail from "./features/letters/components/LettersDetail.tsx";
 import BaseLayout from "./layouts/BaseLayout.tsx";
 import App from "./app/App.tsx";
+import ProjectForm from "./features/projectform/ProjectForm.tsx";
 
 
 
@@ -20,12 +21,13 @@ ReactDOM.createRoot(root).render(
     <BaseLayout>
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/currentprojects" element={<Projects />} />
+        <Route path="/projects" element={<Projects />} />
+        <Route path="/projects/create" element={<ProjectForm />} />
         <Route path="/about" element={<About />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/letters/create" element={<PostForm />} />
+        <Route path="/archives/create" element={<PostForm />} />
         <Route path="/archives" element={<Letters />} />
-        <Route path="/letters/:title" element={<LettersDetail />} />
+        <Route path="/archives/:title" element={<LettersDetail />} />
       </Routes>
     </BaseLayout>
   </BrowserRouter>

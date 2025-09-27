@@ -7,7 +7,7 @@ type LayoutProps = {
 
 function BaseLayout({children}: LayoutProps) {
   return (
-    <div className="w-full min-h-full">
+    <div className="w-full min-h-full bg-background-light">
         <NavigationBar />
         
         {children}

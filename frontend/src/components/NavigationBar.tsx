@@ -1,54 +1,79 @@
-import { NavLink } from "react-router"
+import { NavLink, useLocation } from "react-router"
 import {
   NavigationMenu,
   NavigationMenuItem,
-  NavigationMenuLink,
   NavigationMenuList,
 } from "@/components/ui/navigation-menu"
-import { EmailSignUp } from "@/features/emailsubscribe/components/EmailSignUp"
 import { MobileNavigationBar } from "./MobileNavigationBar"
 
 function NavigationBar() {
+  const location = useLocation()
+
+  // Check active route
+  const isActive = (path: string) => location.pathname === path
+
   return (
     <div className="w-full p-2">
       {/* Desktop Menu */}
       <div className="hidden sm:grid grid-cols-3 items-center">
-        
-        {/* Left spacer */}
-        <div></div>
-
-        {/* Center nav links */}
+        <div className="ml-2">
+          <h1 className="text-text text-2xl font-alan font-normal">
+            Braxton
+          </h1>
+        </div>
         <div className="flex justify-center">
           <NavigationMenu>
             <NavigationMenuList className="flex items-center space-x-6">
               <NavigationMenuItem>
-                <NavigationMenuLink className="hover:bg-blue-500 hover:text-white" asChild>
-                  <NavLink to="/"><h2 className="font-semibold text-xl">Home</h2></NavLink>
-                </NavigationMenuLink>
+                <NavLink to="/">
+                  <h2
+                    className={`font-alan text-xl px-3 py-1 rounded ${
+                      isActive("/") ? "link-active" : "link"
+                    }`}
+                  >
+                    Home
+                  </h2>
+                </NavLink>
               </NavigationMenuItem>
+
               <NavigationMenuItem>
-                <NavigationMenuLink asChild className="hover:bg-blue-500 hover:text-white">
-                  <NavLink to="/currentprojects"><h2 className="font-semibold text-xl">Projects</h2></NavLink>
-                </NavigationMenuLink>
+                <NavLink to="/projects">
+                  <h2
+                    className={`font-alan text-xl px-3 py-1 rounded ${
+                      isActive("/projects") ? "link-active" : "link"
+                    }`}
+                  >
+                    Projects
+                  </h2>
+                </NavLink>
               </NavigationMenuItem>
+
               <NavigationMenuItem>
-                <NavigationMenuLink asChild className="hover:bg-blue-500 hover:text-white">
-                  <NavLink to="/about"><h2 className="font-semibold text-xl">About</h2></NavLink>
-                </NavigationMenuLink>
+                <NavLink to="/about">
+                  <h2
+                    className={`font-alan text-xl px-3 py-1 rounded ${
+                      isActive("/about") ? "link-active" : "link"
+                    }`}
+                  >
+                    About
+                  </h2>
+                </NavLink>
               </NavigationMenuItem>
+
               <NavigationMenuItem>
-                <NavigationMenuLink asChild className="hover:bg-blue-500 hover:text-white">
-                  <NavLink to="/archives"><h2 className="font-semibold text-xl">Archive</h2></NavLink>
-                </NavigationMenuLink>
+                <NavLink to="/archives">
+                  <h2
+                    className={`font-alan text-xl px-3 py-1 rounded ${
+                      isActive("/archives") ? "link-active" : "link"
+                    }`}
+                  >
+                    Archive
+                  </h2>
+                </NavLink>
               </NavigationMenuItem>
             </NavigationMenuList>
           </NavigationMenu>
         </div>
-
-        {/* Right side subscribe */}
-        {/* <div className="flex justify-end">
-          <EmailSignUp />
-        </div> */}
       </div>
 
       {/* Mobile Menu */}

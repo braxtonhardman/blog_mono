@@ -2,7 +2,6 @@ import type { LetterCardProps } from "../types";
 import { NavLink } from "react-router";
 import { useEffect, useState } from "react";
 import { ScrollArea } from "@/components/ui/scroll-area"
-import { Separator } from "@/components/ui/separator";
 
 // Renders the list of avaliable cards 
 function LettersList() {
@@ -40,15 +39,17 @@ function LettersList() {
       <div className="mt-5 w-full flex flex-col justify-between items-center">
         <ScrollArea className="w-3/4">
 
-          <h1 className="leading-none font-bold text-xl sm:xl underline underline-offset-8">Archive</h1>
+          <h1 className="leading-none font-alan text-xl sm:xl">
+            Archive
+          </h1>
 
           {letters.map((letter, index) => (
-                <NavLink key={index} to={`/letters/${letter.Title}`} className="m-3 hover:text-blue-500">
+                <NavLink key={index} to={`/archives/${letter.Title}`} className="m-3 hover:text-secondary">
                   <div key={letter.ID} className="flex flex-row justify-between items-center text-semibold text-lg">
-                    <h1>
+                    <h1 className="font-alan">
                       {letter.Title}
                     </h1>
-                    <h3 className="hidden sm:flex">
+                    <h3 className="font-alan hidden sm:flex">
                       {new Intl.DateTimeFormat("en-US", {
                         year: "numeric",
                         month: "long",
@@ -57,7 +58,7 @@ function LettersList() {
                       }
                     </h3>
                   </div>
-                  <Separator className="my-2" />
+                  <hr className="bg-background-dark text-bg-dark"/>
                 </ NavLink>
             ))}
         </ScrollArea>

@@ -9,7 +9,6 @@ import (
 func NewPostgresDB(env *Env) (*gorm.DB, error){ 
 
 	db, err := postgres.Open(env.DBHost, env.DBUser, env.DBPass, env.DBName, env.DBPort)
-
 	if(err != nil) { 
 		return nil, err
 	}

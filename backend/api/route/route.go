@@ -13,8 +13,9 @@ func SetUp(env *bootstrap.Env, db *gorm.DB, gin *gin.Engine) {
 	publicRouter := gin.Group("");
 
 	// All Public API's  
-	NewPostRouter(env, db, publicRouter);
+	NewPostRouter(env, db, publicRouter)
 	NewUserRouter(env, db, publicRouter) 
+	NewProjectRouter(env, db, publicRouter)
 
 	// All Private API's behind middleware authentication 
 	// protecedRoute := gin.Use()

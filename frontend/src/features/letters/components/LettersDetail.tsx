@@ -3,11 +3,28 @@ import { useEffect, useState } from "react"
 import { useParams } from "react-router"
 import type { LetterCardProps } from "../types"
 
+type Block = { 
+  ID: number; 
+  BlockType: string; 
+  Content: string; 
+  AssignmentOrder: number;  
+  PostID: number;  
+}
+
+type PostProp = { 
+  ID?: number;
+  Title: string; 
+  Description?: string; 
+  CreatedAt: string;
+  UpdatedAt: string; 
+  DeletedAt: string | null; 
+  Blocks: Block[]
+}
 // Add information to fetch details about specific posts.
 function LettersDetail() {
 
   const { title } = useParams(); // Get :title from route
-  const [post, setPost] = useState<LetterCardProps>(); // post type is null or object
+  const [post, setPost] = useState<PostProp>(); // post type is null or object
   const [date, setDate] = useState<string>("");
   const [error, setError] = useState("");
 
@@ -18,7 +35,7 @@ function LettersDetail() {
           console.log(title);
           const res = await fetch(`http://localhost:8080/posts/${encodeURIComponent(title)}`);
           if (!res.ok) throw new Error("Post not found");
-          const data: LetterCardProps = await res.json();
+          const data: PostProp = await res.json();
           console.log(data)
           setPost(data);
          
@@ -43,26 +60,39 @@ function LettersDetail() {
   if (!post) return <div>Loading...</div>;
 
   return (
-    <div className="w-full min-h-full flex flex-col mt-6">
+    <div className="w-full min-h-full flex flex-col items-center justify-center mt-6">
       {/* Top Header */}
-      <div className="w-full flex flex-col items-start p-4 relative">
-        <h1 className="text-4xl font-semibold">
+      <div className="flex flex-col items-center justify-center w-full sm:w-3/4 p-4 relative">
+        <h1 className="text-5xl text-text font-alan font-semibold">
           {post.Title}
         </h1>
 
-        <h4 className="lg:text-xl sm:text-lg">
+        <h4 className="font-alan text-text text-md">
           {date}
         </h4>
 
 
       </div>
 
-      <hr className="w-3/4 ml-3 border-t-2 sm:w-1/3"/>
-
       {/* Body - centered plain text */}
-      <h3 className="p-5 font-light text-black">
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Ducimus, doloribus. Error harum vero adipisci reprehenderit mollitia ipsum eligendi corporis in, veniam deserunt non, hic possimus perferendis iste provident quibusdam ea cupiditate? Voluptatem eius, at tempora quia dolores officiis rem aperiam, voluptates libero iste a eaque optio in tempore ipsam, fugiat harum voluptas quas exercitationem illo. Quidem eum, ad nisi ullam animi doloribus atque nostrum accusantium. Eveniet, autem. Voluptatem magni amet earum porro nam? Nulla, non! Placeat, doloribus minima molestias recusandae voluptatum cupiditate harum dolorem necessitatibus temporibus dolor modi rerum quasi pariatur saepe in sequi iste deleniti, nobis deserunt repellendus aperiam maxime soluta. Esse possimus animi, eius voluptas commodi corporis harum hic ut quos quibusdam fugiat sed quam pariatur, tempore at in, aut eos blanditiis. Cupiditate in dolorum vero minima rerum placeat expedita! Molestias, rerum ratione? Eligendi, tempore quasi numquam eaque dolores ipsum! Ex error explicabo aliquid corrupti, id dolore totam quas mollitia, doloremque dolorum facere assumenda omnis dicta perferendis eos quasi, illum at incidunt quaerat. Sequi assumenda officiis ipsum ipsam enim aliquid exercitationem quasi voluptas numquam recusandae illum, a, molestiae nobis voluptatum. Cum aspernatur libero reprehenderit quaerat temporibus magni iure sunt tenetur saepe. Commodi repellendus ea, ipsum quod voluptatem ullam impedit sunt et est itaque nulla amet quisquam voluptatibus sed optio deserunt accusantium id iste corporis, tempora, doloribus velit quaerat sequi. Nobis, est aut! Repellendus, praesentium sint deleniti consequatur a reiciendis unde, architecto ea ipsum sit harum perferendis fuga soluta dolores modi deserunt quis voluptatem sequi? Quae ab architecto iusto quibusdam temporibus minus deserunt et. Excepturi magni animi possimus quae consequuntur eius recusandae tempore voluptates nulla totam nobis voluptatibus facilis, inventore dignissimos nesciunt corporis quibusdam sint, accusantium at suscipit maxime natus nisi temporibus incidunt. Sit labore ad repudiandae aliquam deserunt neque laborum fuga, veritatis odit quia error in explicabo a.
+      <h3 className="p-5 font-alan text-text w-full sm:w-3/4">
+        {post.Description}
       </h3>
+      {post.Blocks.map((block, index) => {
+        if(block.BlockType == "image") { 
+          return (
+            <img src={block.Content} key={index}></img>
+          )
+
+        } else { 
+          return (
+            <h3 className="p-5 font-alan text-text font-text w-full sm:w-3/4" key={index}>
+              {/* {block.Content} */} Lorem, ipsum dolor sit amet consectetur adipisicing elit. Accusantium eum iure incidunt facilis ratione. Molestias similique nemo, suscipit excepturi beatae doloremque, error ea reiciendis sint veritatis deserunt soluta. Maxime modi repellendus quidem voluptatem perferendis, veritatis distinctio nemo quia. Optio atque vitae voluptatem culpa similique possimus adipisci quis ullam suscipit animi eius, velit quibusdam dolorum ex laboriosam, delectus architecto qui! Ab, dolor voluptatum dicta quis consequuntur beatae corrupti. Necessitatibus temporibus quibusdam ab nemo, eaque consequuntur, molestiae incidunt deserunt nam expedita commodi? Pariatur sequi cupiditate porro, ex quam sed hic dicta similique. Laborum praesentium, magnam rerum rem sint tenetur, laboriosam aspernatur saepe natus earum necessitatibus ex animi dignissimos quos expedita officiis pariatur! Nihil impedit laudantium non obcaecati distinctio sunt pariatur, accusantium reprehenderit in, fugiat, laboriosam quaerat eligendi sequi? Eveniet voluptatibus neque quae eaque eius impedit aspernatur nemo quos non illum, enim eum dignissimos, minus doloremque repudiandae numquam, atque voluptatem tenetur? Explicabo itaque delectus adipisci eos? Enim incidunt dicta distinctio quis repellat in, provident ut ea sit culpa vitae, molestiae similique laudantium dolores sed assumenda soluta minus corporis? Sunt fugit ducimus debitis dolorum nihil fuga est cum iste optio illum earum consequatur, dolore neque, modi voluptatem itaque, omnis nobis obcaecati doloremque excepturi eaque?
+            </h3>
+          ) 
+        }
+      })}
+      
     </div>
   )
 }
