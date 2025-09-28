@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Alan+Sans:wght@300..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Alan+Sans:wght@300..900&family=Lexend:wght@100..900&display=swap');
 @import "tailwindcss";
 @import "tw-animate-css";
 
@@ -7,6 +8,7 @@
 
 @theme inline {
   --font-alan: "alan-sas", "sans-serif";
+  --font-lexend: "lexend", sans-serif;
   --color-background: var(--bg);
   --color-background-dark: var(--bg-dark);
   --color-background-light: var(--bg-light);
@@ -50,7 +52,6 @@
     background-color: var(--bg-dark);
     color: var(--text);
     border-radius: 0.5rem;
-    padding: 1rem;
     transition: all 0.3s ease; 
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* subtle shadow */
   }

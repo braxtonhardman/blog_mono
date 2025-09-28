@@ -6,6 +6,9 @@ type Project struct {
 	Title string 
 	Description string 
 	Image string
+	Repository string
+	Site string
+	Status string
 }
 
 type ProjectRepository interface { 

@@ -1,49 +1,120 @@
 import { useEffect, useState} from "react"
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Github } from "lucide-react";
+import { SquareArrowOutUpRight } from 'lucide-react';
 
 
-type ProjectProp = {
-  ID: number,
-  Title: string,
-  Description: string ,
-  Image: string,
+type Project = { 
+  ID: number; 
+	Title: string; 
+	Description: string; 
+	Image: string;
+  Repository: string; 
+  Site: string; 
+  Status: string; 
 }
+
 function Projects() {
-  const [projects, setProjects] = useState<ProjectProp[]>([]);
+  const [projects, setProjects] = useState<Project[]>([]);
 
   useEffect(() => { 
-    fetch(`http://${import.meta.env.VITE_ADDRESS}/projects/create`)
-    .then((res) => {
-      if (!res.ok) {
-        throw new Error("Failed to fetch letters");
+    fetch(`http://${import.meta.env.VITE_ADDRESS}/projects`)
+    .then((res) => { 
+      if(!res.ok) { 
+        console.log("Error retrieving projects")
       }
       return res.json();
     })
-    .then((data: ProjectProp[]) => {
+    .then((data: Project[]) => { 
       setProjects(data);
     })
-    .catch((err) => {
-      console.error("Error fetching letters:", err);
+    .catch((err) => { 
+      console.log(err)
     })
-  }, [projects])
+  }, []);
   return (
-    <div className="flex flex-col justify-start items-start p-2 mt-5">
-      {projects.map((project) => (
-        <div className="flex flex-row w-full">
-          <img src={project.Image} alt="" />
-          <div className="flex flex-col">
-            {/* Title */}
-            <h1 className="font-alan">
-              {project.Title}
-            </h1>
+    <div className="flex flex-col sm:grid sm:grid-cols-3 mt-0 w-full gap-10 p-2 sm:p-20">
+      {projects.length > 0 ? (
+        projects.map((project) => {
+          // Determine badge classes based on status
+          let badgeClasses = "";
+          switch (project.Status) {
+            case "Live":
+              badgeClasses = "bg-green-100 text-green-800";
+              break;
+            case "Development":
+              badgeClasses = "bg-yellow-100 text-yellow-800";
+              break;
+            case "Coming_soon":
+              badgeClasses = "bg-blue-100 text-blue-800";
+              break;
+            default:
+              badgeClasses = "bg-gray-100 text-gray-800";
+          }
 
-            {/* Description */}
-            <h3 className="font-alan">
-              {project.Description}
-            </h3>
-          </div>
-        </div>
-      ))}
+          return (
+            <div
+              key={project.ID}
+              className="card relative bg-background-light rounded-xl shadow-md overflow-hidden
+                        transform transition duration-300 hover:scale-105 hover:shadow-lg hover:text-primary"
+            >
+              {/* Badge in top-right */}
+              <div className="absolute top-3 right-3">
+                <Badge className={`${badgeClasses} px-2 py-1 rounded-full text-sm font-semibold`}>
+                  {project.Status.replace("_", " ")}
+                </Badge>
+              </div>
 
+              {/* Image */}
+              <img
+                src={project.Image}
+                alt={project.Title}
+                className="w-full h-48 object-cover"
+              />
+
+              {/* Content */}
+              <div className="p-5">
+                <h2 className="font-lexend font-bold text-xl">{project.Title}</h2>
+                <p className="text-sm mt-2">{project.Description}</p>
+              </div>
+
+               {/* Footer */}
+               <div className="p-2 flex flex-row w-full">
+                  {project.Status === "Live" ? (
+                    <a
+                      href={project.Site} // replace with your live project URL
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex flex-row w-1/2 sm:w-1/3 p-2 mr-2 hover:bg-neutral-100 bg-background-light border border-solid text-black rounded-md items-center justify-center"
+                    >
+                      <SquareArrowOutUpRight className="w-5 h-5 mr-2"/>
+                      <h1 className="font-lexend">
+                        View Live
+                      </h1>
+                    </a>
+                  ) : (
+                    <div></div>
+                  )}
+
+                  <a
+                    href={project.Repository} // replace with your GitHub repo URL
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex flex-row p-2 text-white button rounded-md items-center justify-center "
+                  >
+                    <Github className="w-5 h-5 mr-2"/>
+                    <h1 className="font-lexend">
+                      Code
+                    </h1>
+                  </a>
+                </div>
+            </div>
+          );
+        })
+      ) : (
+        <p className="text-gray-500">No projects available</p>
+      )}
     </div>
   )
 }

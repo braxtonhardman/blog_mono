@@ -1,130 +1,162 @@
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
-} from "@/components/ui/carousel"
-
-import {
-  Card,
-  CardContent,
-  CardHeader,
-} from "@/components/ui/card"
-
 import { EmailSignUp } from "@/features/emailsubscribe/components/EmailSignUp"
 import { useEffect, useState } from "react"
-import { NavLink } from "react-router"
-import type { LetterCardProps } from "@/features/letters/types"
+// import { NavLink } from "react-router"
+import { Linkedin } from 'lucide-react';
+import { Github } from 'lucide-react';
 import { SquareArrowOutUpRight } from 'lucide-react';
-import { Button } from "@/components/ui/button"
+import { ArrowDown } from 'lucide-react';
+import { Badge } from "@/components/ui/badge";
+
+type Project = { 
+  ID: number; 
+	Title: string; 
+	Description: string; 
+	Image: string;
+  Repository: string; 
+  Site: string; 
+  Status: string; 
+}
 
 function Home() {
-  const [letters, setLetters] = useState<LetterCardProps[]>([]);
+  const [projects, setProjects] = useState<Project[]>([]);
 
   useEffect(() => { 
-    // Replace with your actual backend endpoint
-    fetch(`http://${import.meta.env.VITE_ADDRESS}/posts`) 
-      .then((res) => {
-        if (!res.ok) {
-          throw new Error("Failed to fetch letters");
-        }
-        return res.json();
-      })
-      .then((data: LetterCardProps[]) => {
-        setLetters(data);
-      })
-      .catch((err) => {
-        console.error("Error fetching letters:", err);
-      })
+    fetch(`http://${import.meta.env.VITE_ADDRESS}/projects`)
+    .then((res) => { 
+      if(!res.ok) { 
+        console.log("Error retrieving projects")
+      }
+      return res.json();
+    })
+    .then((data: Project[]) => { 
+      setProjects(data);
+    })
+    .catch((err) => { 
+      console.log(err)
+    })
   }, []);
 
   return (
-    <div className="grid grid-cols-6 gap-5 mt-7">
-
+    <div className="flex flex-col w-full">
       {/* Header */}
-      <div className="flex flex-col items-start justify-start w-full h-full sm:col-start-2 col-start-1 col-span-6 sm:col-span-4 row-start-1 m-2 p-2">
-        <h1 className="font-alan text-xl sm:text-3xl">
-          Projects, insights, and ideas for modern software and hardware.
+      <div className="flex flex-col items-center justify-start w-full h-screen">
+        <h1 className="font-lexend font-bold text-4xl sm:text-6xl mt-50">
+          Building the Future
         </h1>
+
+        <h3 className="font-alan text-center mt-3 text-lg sm:text-lg">
+          Developing invative products to better the world.
+        </h3>
+        
+        <div className="flex flex-row items-center justify-between mt-3">
+          <a href="https://github.com/braxtonhardman" target="_blank" className="hover:text-blue-500">
+            <Github className="h-5 w-5"/>
+          </a>
+
+          <a href="https://www.linkedin.com/in/braxton-hardman-620367293/" target="_blank" className="hover:text-blue-500">
+            <Linkedin className="h-5 w-5 ml-3" />
+          </a>
+        </div>
+
+        <div className="bg-background-dark rounded-full p-2 mt-8 animate-bounce">
+          <ArrowDown className=""/>
+        </div>
       </div>
 
 
-      <div className="flex flex-col justify-center sm:justify-between items-center w-full h-full row-start-2 col-start-1 sm:col-start-2 col-span-6 sm:col-span-4">
-        <Carousel
-          
-          className="min-w-full w-full h-full sm:max-w-5/6 mt-5"
-          >
-            <CarouselContent className="p-1">
-              {Array.from({ length: 5 }).map((_, index) => (
-                <CarouselItem
-                  key={index}
-                  className="sm:basis-1/2 lg:basis-1/3 flex justify-center"
-                >
-                  {/* Card */}
-                  <div className="flex flex-col items-start justify-start w-5/6 h-11/12 m-2 card text-text rounded-lg shadow-md overflow-hidden">
-                    
-                  
-                    {/* Image / Placeholder */}
-                    <div className="w-full h-32 bg-gradient-to-b from-bg-light to-bg-dark flex items-center justify-center text-text-muted font-semibold">
-                      Image
-                    </div>
-
-                    {/* Content */}
-                    <div className="p-4 flex flex-col gap-2">
-                      {/* Title */}
-                      <h2 className="font-alan text-lg font-semibold">
-                        Title
-                      </h2>
-
-                      {/* Description */}
-                      <p className="text-text-muted text-sm">
-                        A brief description goes here. Keep it concise and clear.
-                      </p>
-
-                      <div className="w-full flex justify-start mt-2">
-                        <button className="button rounded-md font-alan text-sm px-4 py-2 whitespace-nowrap">
-                          Learn More
-                        </button>
-                      </div>
-                      
-                    </div>
-
-                  </div>
-                </CarouselItem>
-              ))}
-            </CarouselContent>
-        </Carousel>
-      </div>      
-
-      {/* Letters Side Bar */}
-      <ul className="flex-col m-0 p-0 items-start justify-start col-start-6 row-span-2 row-start-1 hidden lg:flex mt-2"> 
-        <h1 className="font-alan text-2xl">
-          From the Archive
+      <div className="flex flex-col items-center justify-center mt-40">
+        <h1 className="flex-lexend font-bold text-2xl sm:text-5xl">
+          Featured Projects & Ventures
         </h1>
+        <div className="flex flex-col sm:grid sm:grid-cols-2 mt-0 w-full gap-10 p-4 sm:p-20">
+          {projects.length > 0 ? (
+            projects.slice(0, 4).map((project) => {
+              // Determine badge classes based on status
+              let badgeClasses = "";
+              switch (project.Status) {
+                case "Live":
+                  badgeClasses = "bg-green-100 text-green-800";
+                  break;
+                case "Development":
+                  badgeClasses = "bg-yellow-100 text-yellow-800";
+                  break;
+                case "Coming_soon":
+                  badgeClasses = "bg-blue-100 text-blue-800";
+                  break;
+                default:
+                  badgeClasses = "bg-gray-100 text-gray-800";
+              }
 
-        <hr className="w-5/6 h-1"/>
-        
-        <div>
+              return (
+                <div
+                  key={project.ID}
+                  className="card relative bg-background-light rounded-xl shadow-md overflow-hidden
+                            transform transition duration-300 hover:scale-105 hover:shadow-lg hover:text-secondary"
+                >
+                  {/* Badge in top-right */}
+                  <div className="absolute top-3 right-3">
+                    <Badge className={`${badgeClasses} px-2 py-1 rounded-full text-sm font-semibold`}>
+                      {project.Status.replace("_", " ")}
+                    </Badge>
+                  </div>
 
-        </div>
-        {letters.slice(0, 6).map((letter, index) => (
-          <li key={index} className="mt-2">
-            <NavLink to={`/archives/${letter.Title}`}>
-              <div className="flex flex-row items-center hover:text-secondary">
-                <div className="flex justify-center items-center rounded-full p-2 bg-neutral-200">
-                  <SquareArrowOutUpRight className="w-4 h-4"/>
+                  {/* Image */}
+                  <img
+                    src={project.Image}
+                    alt={project.Title}
+                    className="w-full h-48 object-cover"
+                  />
+
+                  {/* Content */}
+                  <div className="p-5">
+                    <h2 className="font-lexend font-bold text-xl">{project.Title}</h2>
+                    <p className="text-sm mt-2">{project.Description}</p>
+                  </div>
+
+                  {/* Footer */}
+                  <div className="p-2 flex flex-row w-full">
+                    {project.Status === "Live" ? (
+                      <a
+                        href={project.Site} // replace with your live project URL
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex flex-row sm:w-1/5 p-2 mr-2 hover:bg-neutral-100 bg-background-light border border-solid text-black rounded-md items-center justify-center"
+                      >
+                        <SquareArrowOutUpRight className="w-5 h-5 mr-2"/>
+                        <h1 className="font-lexend">
+                          View Live
+                        </h1>
+                      </a>
+                    ) : (
+                      <div></div>
+                    )}
+
+                    <a
+                      href={project.Repository} // replace with your GitHub repo URL
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex flex-row p-2 text-white button rounded-md items-center justify-center "
+                    >
+                      <Github className="w-5 h-5 mr-2"/>
+                      <h1 className="font-lexend">
+                        Code
+                      </h1>
+                    </a>
+                  </div>
                 </div>
-                <h1 className="font-light ml-3 text-xl">{letter.Title}</h1>
-              </div>
-              
-            </NavLink>
-          </li>
-        ))}
-      </ul>
+              );
+            })
+          ) : (
+            <p className="text-gray-500">No projects available</p>
+          )}
+        </div>
+      </div>
+      
+
+            
 
       {/* Subscribe Section */}
-      <div className="flex flex-col align-middle justify-center items-center row-start-3 col-span-6 mt-20 p-2">
+      <div className="flex flex-col align-middle justify-center items-center row-start-3 col-span-6 mt-10 p-2">
         {/* Title */}
         <h1 className="font-alan font-semibold text-4xl">
               Subscribe

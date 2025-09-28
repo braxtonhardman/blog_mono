@@ -39,11 +39,14 @@ function ProjectForm() {
               setuploadSuccess(false);
             }
             const imageUrl: string = `${import.meta.env.VITE_PUBLIC_URL}/${file.name}`
-            console.log(imageUrl)
+            console.log(formData.get("status"));
             const payload = {
               Title: formData.get("title"),
               Description: formData.get("description") ,
               Image: imageUrl,
+              Repository: formData.get("repo"),
+              Site: formData.get("site"),
+              Status: formData.get("status") as String, 
             }
 
             console.log(JSON.stringify(payload))
@@ -110,6 +113,27 @@ function ProjectForm() {
 
                 <Label className="font-alan mt-6">Image</Label>
                 <Input name="image" type="file" />
+
+                <Label className="font-alan mt-6">GitHub Repository</Label>
+                <Input name="repo" />
+
+                <Label className="font-alan mt-6">Live Site</Label>
+                <Input name="site" />
+
+                <Label className="font-alan mt-6">Status</Label>
+                <select
+                  name="status"
+                  className="mt-1 block w-full rounded-md border  px-3 py-2 text-base font-alan text-gray-900 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 focus:outline-none"
+                  defaultValue="Coming Soon"
+                >
+                  <option value="" disabled>
+                    Select status
+                  </option>
+                  <option value="Live">Live</option>
+                  <option value="Development">Development</option>
+                  <option value="Coming_soon">Coming Soon</option>
+                </select>
+
 
                 <div className="w-full flex items-center justify-center mt-3">
                     <Button className="button w-1/3" type="submit">Submit</Button>
