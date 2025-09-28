@@ -21,6 +21,7 @@ type Env struct {
 	RefreshTokenSecret     string `mapstructure:"REFRESH_TOKEN_SECRET"`
 	AWS_ACCESS_KEY		   string `mapstructure:"AWS_ACCESS_KEY"`
 	AWS_SECRET_KEY         string `mapstructure:"AWS_SECRET_KEY"`
+	BUCKET_NAME			   string `mapstructure:"BUCKET_NAME"`
 }
 
 

@@ -20,6 +20,7 @@ func NewProjectRouter(env *bootstrap.Env, db *gorm.DB, router *gin.RouterGroup) 
 
 	router.GET("/projects", pc.List)
 	router.POST("/projects/create", pc.CreateProject)
-	router.GET("/projects/signedkey", controller.GetSignedURL)
+	router.POST("/projects/signedkey", pc.GetSignedURL)
+	router.POST("/projects/public", pc.SetPublic)
 
 }

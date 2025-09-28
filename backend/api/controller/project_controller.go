@@ -1,16 +1,18 @@
 package controller
 
 import (
-	"blog-backend/domain"
-	"net/http"
-	"github.com/gin-gonic/gin"
 	"blog-backend/bootstrap"
-	"fmt"
+	"blog-backend/domain"
 	"context"
-    "github.com/aws/aws-sdk-go-v2/config"
-    "github.com/aws/aws-sdk-go-v2/credentials"
-    "github.com/aws/aws-sdk-go-v2/service/s3"
+	"net/http"
+	"time"
+	"fmt"
 	"github.com/aws/aws-sdk-go-v2/aws"
+	"github.com/aws/aws-sdk-go-v2/config"
+	"github.com/aws/aws-sdk-go-v2/credentials"
+	"github.com/aws/aws-sdk-go-v2/service/s3"
+	"github.com/aws/aws-sdk-go-v2/service/s3/types"
+	"github.com/gin-gonic/gin"
 )
 
 
@@ -19,28 +21,101 @@ type ProjectController struct {
 	Env *bootstrap.Env
 }
 
+func (c *ProjectController) SetPublic(ctx *gin.Context) { 
+	var fileKey string 
+
+	err := ctx.BindJSON(&fileKey)
+
+	if(err != nil) { 
+		ctx.JSON(http.StatusInternalServerError, domain.ErrorResponse{Message: "Error getting fileKey"})
+		return
+	}
+
+	// Create custom credentials provider
+	creds := credentials.NewStaticCredentialsProvider(c.Env.AWS_ACCESS_KEY, c.Env.AWS_SECRET_KEY, "")
+
+	// Load config with DigitalOcean Spaces endpoint
+	cfg, err := config.LoadDefaultConfig(
+		context.TODO(),
+		config.WithCredentialsProvider(creds),
+		config.WithRegion("us-east-1"),
+	)
+
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, domain.ErrorResponse{Message: "Error create aws client"})
+		return
+	}
+
+	// Create S3 client
+	client := s3.NewFromConfig(cfg, func (o *s3.Options) {
+		o.BaseEndpoint = aws.String("https://sfo3.digitaloceanspaces.com")
+	})
+
+	bucket := c.Env.BUCKET_NAME
+
+	_, err = client.PutObjectAcl(context.TODO(), &s3.PutObjectAclInput{
+		Bucket: &bucket,
+		Key:    &fileKey,
+		ACL:    types.ObjectCannedACLPublicRead,
+	})
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, domain.ErrorResponse{Message: "Failed to set object public"})
+		return
+	}
+	
+	ctx.JSON(http.StatusOK, gin.H{"url": fmt.Sprintf("https://%s.%s/%s", bucket, "sfo3.digitaloceanspaces.com", fileKey)})
+}
 
 func (c *ProjectController) GetSignedURL(ctx *gin.Context) { 
 	
-	creds := credentials.NewStaticCredentialsProvider(c.Env.AWS_ACCESS_KEY, c.Env.AWS_SECRET_KEY, "")
+	var fileKey string 
 
-	cfg, err := config.LoadDefaultConfig(
-		context.TODO(),
-		config.WithRegion("us-east-1"),
-		config.WithCredentialsProvider(creds),
-	)
-	if err != nil {
-		// handle error
-		fmt.Println(err)
+	err := ctx.BindJSON(&fileKey)
+
+	if(err != nil) { 
+		ctx.JSON(http.StatusInternalServerError, domain.ErrorResponse{Message: "Error getting fileKey"})
+		return
 	}
 
-	s3 := s3.NewFromConfig(
-		cfg, 
-		o.EndpointResolverV2 = &resolverV2{
-			o.BaseEndpoint = aws.String("localhost:8080"),
-        }
+	// Create custom credentials provider
+	creds := credentials.NewStaticCredentialsProvider(c.Env.AWS_ACCESS_KEY, c.Env.AWS_SECRET_KEY, "")
+
+	// Load config with DigitalOcean Spaces endpoint
+	cfg, err := config.LoadDefaultConfig(
+		context.TODO(),
+		config.WithCredentialsProvider(creds),
+		config.WithRegion("us-east-1"),
 	)
+
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, domain.ErrorResponse{Message: "Error create aws client"})
+		return
+	}
+
+	// Create S3 client
+	client := s3.NewFromConfig(cfg, func (o *s3.Options) {
+		o.BaseEndpoint = aws.String("https://sfo3.digitaloceanspaces.com")
+	})
+
+	// New Presign Client
+	presignClient := s3.NewPresignClient(client)
+
+	bucket := c.Env.BUCKET_NAME
+
+	httpReq, err := presignClient.PresignPutObject(context.TODO(), &s3.PutObjectInput{
+		Bucket: &bucket,
+		Key: &fileKey,
+	}, s3.WithPresignExpires(5*time.Minute))
+
+	if(err != nil) { 
+		ctx.JSON(http.StatusInternalServerError, domain.ErrorResponse{Message: "Error signing client"})
+		return
+	}
+
+	ctx.JSON(http.StatusOK, httpReq)
+
 }
+
 
 func(c *ProjectController) CreateProject(ctx *gin.Context) { 
 	var project domain.Project

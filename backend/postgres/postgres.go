@@ -29,7 +29,7 @@ func InitBlocksTable(db *gorm.DB) {
 	}
 }
 
-func InitProjecTable(db *gorm.DB) { 
+func InitProjectTable(db *gorm.DB) { 
 	err := db.AutoMigrate(&domain.Project{})
 	if(err != nil) { 
 		log.Fatal("Erorr migrating block table")
@@ -40,6 +40,7 @@ func InitTables(db *gorm.DB) {
 	InitUserTable(db)
 	InitPostTable(db)
 	InitBlocksTable(db)
+	InitProjectTable(db)
 }
 
 func Open(host, user, pass, name string, port string) (*gorm.DB, error) {
