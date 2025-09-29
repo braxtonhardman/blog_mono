@@ -8,6 +8,7 @@ type Post struct {
 	ID          int
 	Title       string
 	Description string
+	ReadTime 	string
 	CreatedAt   time.Time
 	UpdatedAt   time.Time
 	DeletedAt   *time.Time
