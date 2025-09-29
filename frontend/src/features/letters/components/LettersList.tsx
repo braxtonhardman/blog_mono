@@ -14,7 +14,7 @@ function LettersList() {
 
   useEffect(() => { 
     // Replace with your actual backend endpoint
-    fetch(`http://${import.meta.env.VITE_ADDRESS}/posts`) 
+    fetch(`${import.meta.env.VITE_ADDRESS}/posts`) 
       .then((res) => {
         if (!res.ok) {
           throw new Error("Failed to fetch letters");

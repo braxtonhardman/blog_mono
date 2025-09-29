@@ -47,9 +47,10 @@ function PostForm() {
         const file = b.Content
 
         // Get signed URL from backend
-        const res = await fetch(`http://${import.meta.env.VITE_ADDRESS}/posts/signedkey`, {
+        const res = await fetch(`${import.meta.env.VITE_ADDRESS}/posts/signedkey`, {
           method: "POST",
           body: JSON.stringify(file.name),
+          credentials: "include",
           headers: { "Content-Type": "application/json" },
         })
 
@@ -63,7 +64,7 @@ function PostForm() {
           headers: { "Content-Type": file.type },
         })
 
-        await fetch(`http://${import.meta.env.VITE_ADDRESS}/posts/public`, { 
+        await fetch(`${import.meta.env.VITE_ADDRESS}/posts/public`, { 
           method: "POST",
           body: JSON.stringify(file.name),
         })
@@ -82,7 +83,7 @@ function PostForm() {
     ReadTime: formData.get("read_time"),
     Blocks: processedBlocks,
   }
-    const url = `http://${import.meta.env.VITE_ADDRESS}/posts/create`
+    const url = `${import.meta.env.VITE_ADDRESS}/posts/create`
     try {
       const res = await fetch(url, {
         method: "POST",

@@ -19,7 +19,7 @@ function Home() {
   const [projects, setProjects] = useState<Project[]>([]);
 
   useEffect(() => { 
-    fetch(`http://${import.meta.env.VITE_ADDRESS}/projects`)
+    fetch(`${import.meta.env.VITE_ADDRESS}/projects`)
     .then((res) => { 
       if(!res.ok) { 
         console.log("Error retrieving projects")
@@ -148,7 +148,7 @@ function Home() {
                       </div>
                       
                     ) : (
-                      <div></div>
+                      null
                     )}
 
               

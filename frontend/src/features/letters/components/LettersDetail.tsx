@@ -33,7 +33,7 @@ function LettersDetail() {
       try {
         if(title) { 
           console.log(title);
-          const res = await fetch(`http://localhost:8080/posts/${encodeURIComponent(title)}`);
+          const res = await fetch(`${import.meta.env.VITE_ADDRESS}/posts/${encodeURIComponent(title)}`);
           if (!res.ok) throw new Error("Post not found");
           const data: PostProp = await res.json();
           console.log(data)

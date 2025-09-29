@@ -1,12 +1,30 @@
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@radix-ui/react-label'
-import { useState } from 'react'
+import { useState, useEffect} from 'react'
 
 import React from 'react'
 
 function ProjectForm() {
     const [uploadSuccess, setuploadSuccess] = useState<boolean>(false);
+    const [loggedIn, setLoggedIn] = useState<boolean>(false);
+
+    useEffect(() => { 
+
+      async function getAuthentication() { 
+        const response = await fetch(`${import.meta.env.VITE_ADDRESS}/user/me`, {
+          method: "GET",
+          credentials: "include",
+        });
+        
+        const data = await response.json();
+        if (data.authenticated) {
+          setLoggedIn(true)
+        }
+      }
+      getAuthentication()
+    }, [])
+
     async function createProject(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault()
         const formData = new FormData(e.currentTarget)
@@ -18,8 +36,9 @@ function ProjectForm() {
 
         // Get Presigned URL For S3 Bucket 
 
-        fetch(`http://${import.meta.env.VITE_ADDRESS}/projects/signedkey`, { 
+        fetch(`${import.meta.env.VITE_ADDRESS}/projects/signedkey`, { 
           method: "POST",
+          credentials: "include",
           body: JSON.stringify(file.name)
         })
         .then((res) => {
@@ -49,12 +68,11 @@ function ProjectForm() {
               Status: formData.get("status") as String, 
             }
 
-            console.log(JSON.stringify(payload))
-
-            const url = `http://${import.meta.env.VITE_ADDRESS}/projects/create`
+            const url = `${import.meta.env.VITE_ADDRESS}/projects/create`
             fetch(url, {
               method: "POST",
               headers: { "Content-Type": "application/json" },
+              credentials: "include",
               body: JSON.stringify(payload),
             })
             .then((res) => { 
@@ -68,7 +86,7 @@ function ProjectForm() {
             })
 
             
-            fetch(`http://${import.meta.env.VITE_ADDRESS}/projects/public`, { 
+            fetch(`${import.meta.env.VITE_ADDRESS}/projects/public`, { 
               method: "POST",
               body: JSON.stringify(file.name),
             })

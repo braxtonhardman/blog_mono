@@ -19,7 +19,7 @@ function Projects() {
   const [projects, setProjects] = useState<Project[]>([]);
 
   useEffect(() => { 
-    fetch(`http://${import.meta.env.VITE_ADDRESS}/projects`)
+    fetch(`${import.meta.env.VITE_ADDRESS}/projects`)
     .then((res) => { 
       if(!res.ok) { 
         console.log("Error retrieving projects")
@@ -82,35 +82,40 @@ function Projects() {
               {/* Spacer */}
               <div className="mt-4 h-8"></div>
 
-              {/* Footer */}
-              <div className="p-2 flex flex-row w-full">
+             {/* Footer */}
+             <div className="p-2 flex flex-row w-full">
                 {project.Status === "Live" ? (
-                  <a
+                  <div className="flex flex-row w-full">
+                    <a
                     href={project.Site} // replace with your live project URL
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex flex-row w-1/2 sm:w-1/3 p-2 mr-2 hover:bg-neutral-100 bg-background-light border border-solid text-black rounded-md items-center justify-center"
-                  >
-                    <SquareArrowOutUpRight className="w-5 h-5 mr-2"/>
+                    className="flex flex-row sm:w-1/3 p-2 mr-2 hover:bg-neutral-100 bg-background-light border border-solid text-black rounded-md items-center justify-center"
+                    >
+                      <SquareArrowOutUpRight className="w-5 h-5 mr-2"/>
+                      <h1 className="font-lexend">
+                        View Live
+                      </h1>
+                    </a>
+
+                    <a
+                    href={project.Repository} // replace with your GitHub repo URL
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex flex-row p-2 text-white button rounded-md items-center justify-center "
+                    >
+                    <Github className="w-5 h-5 mr-2"/>
                     <h1 className="font-lexend">
-                      View Live
+                      Code
                     </h1>
-                  </a>
+                    </a>
+                  </div>
+                  
                 ) : (
-                  <div></div>
+                  null
                 )}
 
-                <a
-                  href={project.Repository} // replace with your GitHub repo URL
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex flex-row p-2 text-white button rounded-md items-center justify-center "
-                >
-                  <Github className="w-5 h-5 mr-2"/>
-                  <h1 className="font-lexend">
-                    Code
-                  </h1>
-                </a>
+          
               </div>
             </div>
           );
