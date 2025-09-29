@@ -76,39 +76,42 @@ function Projects() {
               {/* Content */}
               <div className="p-5">
                 <h2 className="font-lexend font-bold text-xl">{project.Title}</h2>
-                <p className="text-sm mt-2">{project.Description}</p>
+                <p className="mt-1 text-md text-text-muted font-alan">{project.Description}</p>
               </div>
 
-               {/* Footer */}
-               <div className="p-2 flex flex-row w-full">
-                  {project.Status === "Live" ? (
-                    <a
-                      href={project.Site} // replace with your live project URL
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex flex-row w-1/2 sm:w-1/3 p-2 mr-2 hover:bg-neutral-100 bg-background-light border border-solid text-black rounded-md items-center justify-center"
-                    >
-                      <SquareArrowOutUpRight className="w-5 h-5 mr-2"/>
-                      <h1 className="font-lexend">
-                        View Live
-                      </h1>
-                    </a>
-                  ) : (
-                    <div></div>
-                  )}
+              {/* Spacer */}
+              <div className="mt-4 h-8"></div>
 
+              {/* Footer */}
+              <div className="p-2 flex flex-row w-full">
+                {project.Status === "Live" ? (
                   <a
-                    href={project.Repository} // replace with your GitHub repo URL
+                    href={project.Site} // replace with your live project URL
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex flex-row p-2 text-white button rounded-md items-center justify-center "
+                    className="flex flex-row w-1/2 sm:w-1/3 p-2 mr-2 hover:bg-neutral-100 bg-background-light border border-solid text-black rounded-md items-center justify-center"
                   >
-                    <Github className="w-5 h-5 mr-2"/>
+                    <SquareArrowOutUpRight className="w-5 h-5 mr-2"/>
                     <h1 className="font-lexend">
-                      Code
+                      View Live
                     </h1>
                   </a>
-                </div>
+                ) : (
+                  <div></div>
+                )}
+
+                <a
+                  href={project.Repository} // replace with your GitHub repo URL
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex flex-row p-2 text-white button rounded-md items-center justify-center "
+                >
+                  <Github className="w-5 h-5 mr-2"/>
+                  <h1 className="font-lexend">
+                    Code
+                  </h1>
+                </a>
+              </div>
             </div>
           );
         })

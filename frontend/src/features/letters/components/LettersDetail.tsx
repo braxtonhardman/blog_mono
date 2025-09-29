@@ -82,7 +82,11 @@ function LettersDetail() {
       {post.Blocks.map((block, index) => {
         if(block.BlockType == "image") { 
           return (
-            <img src={block.Content} key={index} className="w-1/2 h-auto sm:w-1/3 sm:h-1/3"></img>
+            <img 
+              src={block.Content} 
+              key={index} 
+              className="w-5/6 sm:w-1/2 md:w-1/3 h-auto my-4"
+            />
           )
 
         } else { 

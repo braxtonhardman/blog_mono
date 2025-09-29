@@ -23,12 +23,12 @@ export function MobileNavigationBar() {
 
   return (
     <div ref={menuRef} className="sm:hidden relative ">
-      <Button onClick={() => setOpen(!open)} className="bg-blue-500 rounded-sm">
+      <Button onClick={() => setOpen(!open)} className="button rounded-sm text-white">
         <Menu className="w-1/2 h-1/2 font-semibold" />
       </Button>
 
       {open && (
-        <div className="absolute right-0 top-0 bg-blue-500 rounded-md z-50">
+        <div className="absolute right-0 top-0 bg-primary text-white rounded-md z-50">
           <NavigationMenu>
             <NavigationMenuList className="flex flex-col p-2 ">
               <NavigationMenuItem>
