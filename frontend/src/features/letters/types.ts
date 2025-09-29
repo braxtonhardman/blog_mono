@@ -5,4 +5,5 @@ export type LetterCardProps = {
     CreatedAt: string;
     UpdatedAt: string; 
     DeletedAt: string | null; 
+    ReadTime: string; 
 }
