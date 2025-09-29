@@ -4,6 +4,7 @@ import (
 	"blog-backend/api/route"
 	"blog-backend/bootstrap"
 	"log"
+  "time"
   "blog-backend/domain"
 	"github.com/gin-gonic/gin"
   "github.com/gin-contrib/cors"
@@ -27,7 +28,13 @@ func main() {
   gin := gin.Default()
 
   // ALlows all orignins in the middlware
-  gin.Use(cors.Default())
+  gin.Use(cors.New(cors.Config{
+    AllowOrigins:     []string{"http://localhost:5173"}, // your frontend origin
+    AllowMethods:     []string{"GET", "POST", "OPTIONS"},
+    AllowHeaders:     []string{"Origin", "Content-Type", "Accept"},
+    AllowCredentials: true, // allows cookies to be sent/received
+    MaxAge:           12 * time.Hour,
+}))
   
   route.SetUp(env, db, gin)
 

@@ -9,6 +9,7 @@ import (
 	"log"
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
+	"blog-backend/api/middleware"
 )
 
 func NewPostRouter(env *bootstrap.Env, db *gorm.DB, router *gin.RouterGroup) {
@@ -33,9 +34,8 @@ func NewPostRouter(env *bootstrap.Env, db *gorm.DB, router *gin.RouterGroup) {
 
 	// Should all be portected
 	// Route to create a new post
-	router.POST("/posts/create", pc.CreatePost)
-
-	router.POST("/posts/signedkey", pc.GetSignedURL)
-	router.POST("/posts/public", pc.SetPublic)
+	router.POST("/posts/create", middleware.AuthenticateMiddleware(env), pc.CreatePost)
+	router.POST("/posts/signedkey", middleware.AuthenticateMiddleware(env), pc.GetSignedURL)
+	router.POST("/posts/public", middleware.AuthenticateMiddleware(env), pc.SetPublic)
 	
 }

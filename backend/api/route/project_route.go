@@ -9,6 +9,7 @@ import (
 	"gorm.io/gorm"
 	"blog-backend/services"
 	"log"
+	"blog-backend/api/middleware"
 )
 
 func NewProjectRouter(env *bootstrap.Env, db *gorm.DB, router *gin.RouterGroup) { 
@@ -26,8 +27,10 @@ func NewProjectRouter(env *bootstrap.Env, db *gorm.DB, router *gin.RouterGroup) 
 	}
 
 	router.GET("/projects", pc.List)
-	router.POST("/projects/create", pc.CreateProject)
-	router.POST("/projects/signedkey", pc.GetSignedURL)
-	router.POST("/projects/public", pc.SetPublic)
+
+	// Should all be protected routes
+	router.POST("/projects/create", middleware.AuthenticateMiddleware(env), pc.CreateProject)
+	router.POST("/projects/signedkey", middleware.AuthenticateMiddleware(env), pc.GetSignedURL)
+	router.POST("/projects/public", middleware.AuthenticateMiddleware(env), pc.SetPublic)
 
 }

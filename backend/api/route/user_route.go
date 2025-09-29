@@ -20,7 +20,8 @@ func NewUserRouter(env *bootstrap.Env, db *gorm.DB, publicRouter *gin.RouterGrou
 	}
 
 	// Route to get all the posts
-	publicRouter.POST("/users", pc.CreateUser)
-	publicRouter.GET("/user", pc.FindUser)
+	publicRouter.POST("/user/create", pc.CreateUser)
+	publicRouter.POST("/user/login", pc.Login)
+	publicRouter.GET("/user/me", pc.Me)
 	
 }

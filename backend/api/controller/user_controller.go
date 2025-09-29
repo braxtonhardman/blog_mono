@@ -1,13 +1,16 @@
 package controller
 
 import (
-	"blog-backend/domain"
+	"blog-backend/api/middleware"
 	"blog-backend/bootstrap"
+	"blog-backend/domain"
+	"fmt"
 	"net/http"
+	"time"
+
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt/v5"
 	"golang.org/x/crypto/bcrypt"
-	"time"
 )
 
 type UserController struct {
@@ -19,7 +22,7 @@ func (uc *UserController) CreateUser(c *gin.Context) {
 
 	var user domain.User
 
-	err := c.Bind(&user)
+	err := c.BindJSON(&user)
 
 	if(err != nil) { 
 		c.JSON(http.StatusInternalServerError, domain.ErrorResponse{Message: "Failed to bind to user"})
@@ -55,7 +58,7 @@ func (uc* UserController) Login (c *gin.Context) {
 		Password string `json:"password"`
 	}	
 
-	err := c.Bind(&loginRequest)
+	err := c.BindJSON(&loginRequest)
 
 	if(err != nil) { 
 		c.JSON(http.StatusInternalServerError, domain.ErrorResponse{Message: "Failed to bind to user"})
@@ -75,6 +78,7 @@ func (uc* UserController) Login (c *gin.Context) {
 		c.JSON(http.StatusBadRequest, domain.ErrorResponse{Message: "Incorrect Login Information"})
 		return 
 	}
+	
 	// Create JWT token 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
 		"sub": tempUser.Email,
@@ -90,5 +94,29 @@ func (uc* UserController) Login (c *gin.Context) {
 
 	// Save Token in cookie 
 	c.SetSameSite(http.SameSiteLaxMode)
-	c.SetCookie("Authorization", tokenString, 3600 * 2, "", "", false, true)
+	c.SetCookie(
+		"Authorization",
+		tokenString,
+		3600*2,
+		"/",                  // path
+		"localhost",          // domain (matches frontend if needed)
+		false,                // secure
+		true,                 // HttpOnly
+	)}
+
+func (uc *UserController) Me(c *gin.Context) {
+    tokenString, err := c.Cookie("Authorization")
+    if err != nil {
+        c.JSON(401, gin.H{"authenticated": false})
+        return
+    }
+
+    _, err = middleware.VerifyToken(tokenString, uc.Env)
+    if err != nil {
+		fmt.Println(err)
+        c.JSON(401, gin.H{"authenticated": false})
+        return
+    }
+
+    c.JSON(200, gin.H{"authenticated": true})
 }

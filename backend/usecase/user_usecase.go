@@ -3,6 +3,7 @@ package usecase
 import (
 	"blog-backend/domain"
 	"golang.org/x/crypto/bcrypt"
+	"fmt"
 )
 
 type userUseCase struct {
@@ -16,15 +17,26 @@ func NewUserUseCase(userRepository domain.UserRepository) domain.UserUseCase {
 }
 
 func (uc *userUseCase) Create(user *domain.User) error {
+    // Check if a user already exists
+    count, err := uc.repo.CountUsers() // you need to implement this method in your repo
+    if err != nil {
+        return err
+    }
 
-	// Encrypt the user password and create a user strct 
-	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(user.Password), bcrypt.DefaultCost)
-	if err != nil {
-		return err
-	}
-	user.Password = string(hashedPassword)
+	// Only allow one user to ever exist
+    if count > 0 {
+        return fmt.Errorf("a user already exists")
+    }
 
-	return uc.repo.Create(user)
+	fmt.Println(user.Password)
+    // Encrypt the user password
+    hashedPassword, err := bcrypt.GenerateFromPassword([]byte(user.Password), bcrypt.DefaultCost)
+    if err != nil {
+        return err
+    }
+    user.Password = string(hashedPassword)
+    // Create the user
+    return uc.repo.Create(user)
 }
 
 func (uc *userUseCase) FindUser(email string) (*domain.User, error) {

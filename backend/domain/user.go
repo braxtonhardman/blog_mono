@@ -15,6 +15,7 @@ type User struct {
 type UserRepository interface { 
 	Create(user *User) error
 	FindUser(email string) (*User, error)
+	CountUsers() (int, error)
 	// Login(email string, password string) (*User, error)
 }
 

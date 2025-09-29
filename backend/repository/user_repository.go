@@ -4,7 +4,6 @@ import (
 	"blog-backend/domain"
 	"gorm.io/gorm"
 	"strings"
-	"golang.org/x/crypto/bcrypt"
 )
 
 type userRepository struct {
@@ -17,14 +16,7 @@ func NewUserRepository(db *gorm.DB) domain.UserRepository {
 
 
 func (ur *userRepository) Create(user *domain.User) error {
-	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(user.Password), bcrypt.DefaultCost)
-	if err != nil {
-		return err
-	} 
-	return ur.db.Create(&domain.User{
-		Email: strings.ToLower(user.Email),
-		Password: string(hashedPassword),
-	}).Error
+	return ur.db.Create(user).Error
 }
 
 func (ur *userRepository) FindUser(email string) (*domain.User, error) {
@@ -34,5 +26,13 @@ func (ur *userRepository) FindUser(email string) (*domain.User, error) {
 		return nil, results.Error
 	}
 	return &user, nil
+}
+
+func (ur *userRepository) CountUsers() (int, error) {
+    var count int64
+    if err := ur.db.Model(&domain.User{}).Count(&count).Error; err != nil {
+        return 0, err
+    }
+    return int(count), nil
 }
 
