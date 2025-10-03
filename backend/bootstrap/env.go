@@ -24,29 +24,18 @@ type Env struct {
 
 // This returns a pointer to the environment variable created in memory because we want to refrence the same 
 // environment and not copy it every time. 
-func NewEnv() *Env { 
+func NewEnv() *Env {
+	viper.AutomaticEnv() // read all OS env variables
 
-	// Create a new empty environment struct object
-	env := Env{}
-
-	viper.SetConfigFile(".env")   // load local .env
-
-	// Read in the config file from memory searching in the defined path which we did above using SetConfigFile
-	viper.AutomaticEnv()          // override with environment variables
-	if err := viper.ReadInConfig(); err != nil {
-		log.Println("No local .env file found, relying on environment variables")
-	}
-
-	// Map environment variables to struct
+	var env Env
 	if err := viper.Unmarshal(&env); err != nil {
 		log.Fatalf("Failed to unmarshal environment variables: %v", err)
 	}
 
-	// Log if in development
 	if env.AppEnv == "development" {
 		log.Println("The App is running in development environment")
 	}
 
+	log.Printf("DB Host: %s, Port: %s\n", env.DBHost, env.DBPort) // verify
 	return &env
-
 }
