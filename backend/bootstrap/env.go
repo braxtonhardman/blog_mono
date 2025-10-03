@@ -1,8 +1,7 @@
 package bootstrap
 
 import ( 
-	"log"
-	"github.com/spf13/viper"
+	"os"
 )
 
 
@@ -25,17 +24,19 @@ type Env struct {
 // This returns a pointer to the environment variable created in memory because we want to refrence the same 
 // environment and not copy it every time. 
 func NewEnv() *Env {
-	viper.AutomaticEnv() // read all OS env variables
 
-	var env Env
-	if err := viper.Unmarshal(&env); err != nil {
-		log.Fatalf("Failed to unmarshal environment variables: %v", err)
+	return &Env { 
+		AppEnv: os.Getenv("APP_ENV"),   
+		ServerAddress: os.Getenv("SERVER_ADDRESS"),
+		FrontendAddress: os.Getenv("FRONTEND_ADDRESS"),
+		DBHost: os.Getenv("DB_HOST"),
+		DBPort: os.Getenv("DB_PORT"),           
+		DBUser: os.Getenv("DB_USER"),              
+		DBPass: os.Getenv("DB_PASS"),                 
+		DBName: os.Getenv("DB_NAME"),           
+		AccessTokenSecret: os.Getenv("ACCESS_TOKEN_SECRET"),      
+		AWS_ACCESS_KEY: os.Getenv("AWS_ACCESS_KEY"),	  
+		AWS_SECRET_KEY: os.Getenv("AWS_SECRET_KEY"),
+		BUCKET_NAME: os.Getenv("BUCKET_NAME"),
 	}
-
-	if env.AppEnv == "development" {
-		log.Println("The App is running in development environment")
-	}
-
-	log.Printf("DB Host: %s, Port: %s\n", env.DBHost, env.DBPort) // verify
-	return &env
 }
