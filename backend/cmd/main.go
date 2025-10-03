@@ -8,6 +8,7 @@ import (
   "blog-backend/domain"
 	"github.com/gin-gonic/gin"
   "github.com/gin-contrib/cors"
+  "blog-backend/api/middleware"
 )
 
 func main() {
@@ -29,12 +30,15 @@ func main() {
 
   // ALlows all orignins in the middlware
   gin.Use(cors.New(cors.Config{
-    AllowOrigins:     []string{"http://localhost:5173"}, // your frontend origin
+    AllowOrigins:     []string{env.FrontendAddress}, // your frontend origin
     AllowMethods:     []string{"GET", "POST", "OPTIONS"},
     AllowHeaders:     []string{"Origin", "Content-Type", "Accept"},
-    AllowCredentials: true, // allows cookies to be sent/received
+    AllowCredentials: true,
     MaxAge:           12 * time.Hour,
 }))
+
+  // Set up global rate limiter for routes 
+  gin.Use(middleware.RateLimiter())
   
   route.SetUp(env, db, gin)
 
