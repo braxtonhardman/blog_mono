@@ -99,7 +99,7 @@ func (uc* UserController) Login (c *gin.Context) {
 		tokenString,
 		3600*2,
 		"/",                  // path
-		"",          // domain (matches frontend if needed)
+		"braxtonhardman.com",          // domain (matches frontend if needed)
 		true,                // secure
 		true,                 // HttpOnly
 	)}
