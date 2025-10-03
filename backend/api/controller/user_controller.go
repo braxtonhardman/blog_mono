@@ -93,7 +93,7 @@ func (uc* UserController) Login (c *gin.Context) {
 	}
 
 	// Save Token in cookie 
-	c.SetSameSite(http.SameSiteLaxMode)
+	c.SetSameSite(http.SameSiteNoneMode) // allow cross-site cookies
 	c.SetCookie(
 		"Authorization",
 		tokenString,
