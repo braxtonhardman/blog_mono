@@ -29,26 +29,14 @@ func NewEnv() *Env {
 	// Create a new empty environment struct object
 	env := Env{}
 
+
+	viper.SetConfigFile(".env")   // load local .env
+
 	// Lets viper know the path where our configuration file is 
 	viper.SetConfigFile("/home/braxton/Code/blog/backend/.env")
 
 	// Read in the config file from memory searching in the defined path which we did above using SetConfigFile
-	err := viper.ReadInConfig()
-
-	// If there is an error the application shouldn't launch because that doesnt make sene to launch an application
-	if(err != nil) { 
-		// From the log package Fatal logs the error and does os.Exit(1) which is equivelant to a print and then an os.Exit
-		log.Fatal("Error could not load the environment variables")
-	}
-
-	// Instead of creating an initializing a new variable using := we just re-use error and reassign the variable 
-	// to save memory. Unmarshal attempts to take the .env config file and place that into the struct,
-	// importantly it uses the struct tags to do this mapping. 
-	err = viper.Unmarshal(&env)
-	if(err != nil) { 
-		log.Fatal("Unable to unmarshal the environment variables")
-	}
-
+	viper.AutomaticEnv()          // override with environment variables
 
 	if env.AppEnv == "development" {
 		log.Println("The App is running in development env")
