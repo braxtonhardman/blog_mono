@@ -45,7 +45,7 @@ func InitTables(db *gorm.DB) {
 
 func Open(host, user, pass, name string, port string) (*gorm.DB, error) {
 	dsn := fmt.Sprintf(
-		"host=%s user=%s password=%s dbname=%s port=%s sslmode=disable TimeZone=UTC",
+		"host=%s user=%s password=%s dbname=%s port=%s sslmode=require TimeZone=UTC",
 		host, user, pass, name, port,
 	)
 	fmt.Println(dsn)
