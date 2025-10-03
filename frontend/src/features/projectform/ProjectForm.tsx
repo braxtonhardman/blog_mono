@@ -1,29 +1,12 @@
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@radix-ui/react-label'
-import { useState, useEffect} from 'react'
+import { useState} from 'react'
 
 import React from 'react'
 
 function ProjectForm() {
     const [uploadSuccess, setuploadSuccess] = useState<boolean>(false);
-    const [loggedIn, setLoggedIn] = useState<boolean>(false);
-
-    useEffect(() => { 
-
-      async function getAuthentication() { 
-        const response = await fetch(`${import.meta.env.VITE_ADDRESS}/user/me`, {
-          method: "GET",
-          credentials: "include",
-        });
-        
-        const data = await response.json();
-        if (data.authenticated) {
-          setLoggedIn(true)
-        }
-      }
-      getAuthentication()
-    }, [])
 
     async function createProject(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault()
@@ -105,9 +88,6 @@ function ProjectForm() {
 
       }
 
-    if(!loggedIn) { 
-      return null; 
-    }
     return (
         <form onSubmit={createProject} className="flex flex-col justify-center items-center mt-5">
           {/* Alert */}
