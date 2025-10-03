@@ -99,8 +99,8 @@ func (uc* UserController) Login (c *gin.Context) {
 		tokenString,
 		3600*2,
 		"/",                  // path
-		"localhost",          // domain (matches frontend if needed)
-		false,                // secure
+		uc.Env.FrontendAddress,          // domain (matches frontend if needed)
+		true,                // secure
 		true,                 // HttpOnly
 	)}
 
