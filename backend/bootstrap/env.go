@@ -29,11 +29,7 @@ func NewEnv() *Env {
 	// Create a new empty environment struct object
 	env := Env{}
 
-
 	viper.SetConfigFile(".env")   // load local .env
-
-	// Lets viper know the path where our configuration file is 
-	viper.SetConfigFile("/home/braxton/Code/blog/backend/.env")
 
 	// Read in the config file from memory searching in the defined path which we did above using SetConfigFile
 	viper.AutomaticEnv()          // override with environment variables
